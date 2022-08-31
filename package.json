@@ -1,0 +1,12 @@
+{
+  "name": "phaser-web-test",
+  "scripts": {
+    "dev": "serve"
+  },
+  "dependencies": {
+    "phaser": "^3.55.2"
+  },
+  "devDependencies": {
+    "serve": "^14.0.1"
+  }
+}

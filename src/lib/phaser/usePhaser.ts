@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Game, Types } from "phaser";
 import { defaultPhaserConfig } from "./config";
 
@@ -12,14 +12,14 @@ export function usePhaser({
   ref,
 }: usePhaser): Game | undefined {
   const config = _config || defaultPhaserConfig;
-  let game: Game | undefined;
+  const game = useRef<Game | undefined>();
   useEffect(() => {
     if (!ref?.current) return;
-    game = new Game({ ...config, parent: ref.current });
+    game.current = new Game({ ...config, parent: ref.current });
     return () => {
-      game?.destroy(true);
+      game.current?.destroy(true);
     };
   }, [config, ref]);
 
-  return game;
+  return game.current;
 }

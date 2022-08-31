@@ -1,26 +1,25 @@
 {
   "name": "phaser-web-test",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "start": "browser-sync start --config bs-config.js",
-    "dev": "run-p dev:* start",
-    "dev:js": "npm run build:js -- --watch",
-    "dev:public": "run-s build:public public:watch",
-    "public:watch": "run-when-changed --watch ./public/* --exec \"npm run build:public\"",
-    "build": "run-s build:*",
-    "build:js": "esbuild ./src/index.js --outfile=build/js/phaser.js --bundle --minify --sourcemap --target=chrome58,firefox57,safari11,edge16",
-    "build:public": "shx cp -r public/* build",
-    "clean": "shx rm -rf ./build/*",
-    "predev": "npm run clean"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "phaser": "^3.55.2"
+    "next": "12.2.5",
+    "phaser": "^3.55.2",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "browser-sync": "^2.27.10",
-    "esbuild": "^0.15.6",
-    "npm-run-all": "^4.1.5",
-    "run-when-changed": "^2.1.0",
-    "serve": "^14.0.1",
-    "shx": "^0.3.4"
+    "@types/node": "18.7.14",
+    "@types/react": "18.0.18",
+    "@types/react-dom": "18.0.6",
+    "eslint": "8.23.0",
+    "eslint-config-next": "12.2.5",
+    "typescript": "4.8.2"
   }
 }

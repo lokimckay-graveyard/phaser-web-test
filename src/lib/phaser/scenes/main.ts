@@ -6,9 +6,19 @@ export class MainScene extends Scene {
   private response!: GameObjects.Text;
   private apiButton!: GameObjects.Text;
   private camera!: Cameras.Scene2D.Camera;
+
+  private initialWidth!: number;
+  private initialHeight!: number;
+  private resizeAllowed: boolean = true;
+
   init() {
     this.camera = this.cameras.main;
     this.camera.setBackgroundColor("#24252A");
+
+    this.initialWidth = this.scale.gameSize.width;
+    this.initialHeight = this.scale.gameSize.height;
+
+    window.addEventListener("resize", this.onResize.bind(this));
   }
 
   create() {
@@ -36,19 +46,8 @@ export class MainScene extends Scene {
       centerY + 200,
       20
     );
-  }
 
-  toggleFullscreen() {
-    if (this.scale.isFullscreen) this.scale.stopFullscreen();
-    else this.scale.startFullscreen();
-  }
-
-  onGameObjectUp(_pointer: any, gameObject: any) {
-    gameObject.emit("clicked", gameObject);
-  }
-
-  onClickText() {
-    this.makeAPICall();
+    this.onResize();
   }
 
   createText(text: string, x: number, y: number, size: number = 80) {
@@ -59,6 +58,41 @@ export class MainScene extends Scene {
         fontFamily: "Rancho",
       })
       .setOrigin(0.5, 0.5);
+  }
+
+  toggleFullscreen() {
+    if (this.scale.isFullscreen) {
+      this.scale.stopFullscreen();
+    } else {
+      this.scale.startFullscreen();
+    }
+  }
+
+  onResize() {
+    if (!this.resizeAllowed) return;
+    const canvas = this.game.canvas;
+    const container = canvas.parentElement;
+    if (!canvas || !container) return;
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    container.style.width = width + "px";
+    container.style.height = height + "px";
+    this.scale.resize(width, height);
+    this.centerCameraOn(this.initialWidth / 2, this.initialHeight / 2);
+  }
+
+  centerCameraOn(x: number, y: number) {
+    this.cameras.main.centerOn(x, y);
+  }
+
+  onGameObjectUp(_pointer: any, gameObject: any) {
+    gameObject.emit("clicked", gameObject);
+  }
+
+  onClickText() {
+    this.makeAPICall();
   }
 
   async makeAPICall() {
